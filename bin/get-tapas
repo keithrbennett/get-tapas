@@ -1,0 +1,104 @@
+#!/usr/bin/env ruby
+
+=begin
+Usage: get-tapas [options]
+    -d, --data_dir dir               Directory for downloaded files (default: .)
+    -i, --input_spec spec            Filespec (or '-' for STDIN) containing Ruby Tapas download list page HTML
+    -0, --min_episode_num number     Minimum episode number to download
+    -9, --max_episode_num number     Maximum episode number to download
+    -n, --[no-]no_op                 Don't download anything, just show what would have been downloaded.
+    -r, --[no-]reverse               Reverse the list of input files to download most recent first
+    -z, --sleep_interval seconds     Sleep this many seconds between files
+    -h, --help                       Show this message
+=end
+
+
+require 'awesome_print'
+require 'fileutils'
+require 'optparse'
+require 'ostruct'
+require 'shellwords'
+require_relative '../lib/get_tapas/downloader'
+require_relative '../lib/get_tapas/options'
+require_relative '../lib/get_tapas/page_parser'
+
+def pry
+  require 'pry'
+  binding.pry
+end
+
+
+def process_options
+
+  option_parser = nil
+  output_help_and_terminate = -> { puts option_parser; puts; exit(-1) }
+
+  options = Options.new
+
+  OptionParser.new do |opts|
+
+    option_parser = opts
+
+    opts.banner = "Usage: get-tapas [options]"
+
+    opts.on('-d', '--data_dir dir', 'Directory for downloaded files (default: .)') do |value|
+      options.data_dir = value
+    end
+
+    opts.on('-i', '--input_spec spec',
+            %q{Filespec (or '-' for STDIN) containing Ruby Tapas download list page HTML})  do |value|
+      options.input_spec = value
+    end
+
+    opts.on('-0', '--min_episode_num number',
+            %q{Minimum episode number to download}) do |value|
+      options.min_episode_num = value.to_i
+    end
+
+    opts.on('-9', '--max_episode_num number',
+            %q{Maximum episode number to download}) do |value|
+      options.max_episode_num = value.to_i
+    end
+
+    opts.on('-n', '--[no-]no_op', "Don't download anything, just show what would have been downloaded.") do |value|
+      options.no_op = value
+    end
+
+    opts.on('-r', '--[no-]reverse', 'Reverse the list of input files to download most recent first') do |value|
+      options.reverse = value
+    end
+
+    opts.on('-z', '--sleep_interval seconds', 'Sleep this many seconds between files') do |value|
+      options.sleep_interval = value.to_f
+    end
+
+    opts.on_tail("-h", "--help", "Show this message") do
+      output_help_and_terminate.()
+    end
+
+  end.parse!
+
+  if ARGV.empty?
+    output_help_and_terminate.()
+  end
+
+  options
+end
+
+
+def get_html(options)
+  input = options.input_spec
+  if input == '-'
+    STDIN.read
+  else
+    File.read(input)
+  end
+end
+
+
+options = process_options
+puts "Running get-tapas with the following options:"
+ap options.to_h; puts
+
+html = get_html(options)
+Downloader.new(html, options).call
