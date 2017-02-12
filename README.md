@@ -58,3 +58,10 @@ Usage: get-tapas [options]
 ```
 
 For your convenience, the output directory defaults to `$HOME/ruby-tapas`.
+
+## Validation of the Dowloaded Files
+
+The script makes only a crude test to see that the file has been successfully downloaded
+(see `Downloader.validate_downloaded_file`).
+You may want to verify that yourself. If you find an error condition not already tested,
+please let me know (directly or by posting an issue) and I may be able to add a test for it.
