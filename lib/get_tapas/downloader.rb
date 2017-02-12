@@ -18,7 +18,7 @@ class Downloader
 
 
   def ensure_output_dir_exists(dir)
-    return if Dir.exists?(dir)
+    return if Dir.exist?(dir)
     begin
       FileUtils.mkdir_p(dir)
       puts "Created output data directory #{dir}."
