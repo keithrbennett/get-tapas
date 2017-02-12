@@ -30,6 +30,8 @@ end
 
 def process_options
 
+  no_args_were_provided = ARGV.empty?
+
   option_parser = nil
   output_help_and_terminate = -> { puts option_parser; puts; exit(-1) }
 
@@ -78,7 +80,7 @@ def process_options
 
   end.parse!
 
-  if ARGV.empty?
+  if no_args_were_provided
     output_help_and_terminate.()
   end
 
@@ -90,8 +92,10 @@ def get_html(options)
   input = options.input_spec
   if input == '-'
     STDIN.read
-  else
+  elsif File.file?(input)
     File.read(input)
+  else
+    raise "Invalid input source: #{input.inspect}"
   end
 end
 
