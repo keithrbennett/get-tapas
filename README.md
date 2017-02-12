@@ -57,3 +57,4 @@ Usage: get-tapas [options]
     -h, --help                       Show this message
 ```
 
+For your convenience, the output directory defaults to `$HOME/ruby-tapas`.
