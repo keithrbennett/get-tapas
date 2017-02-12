@@ -62,11 +62,23 @@ class Downloader
   end
 
 
+  def validate_downloaded_file(filespec)
+    if File.size(filespec) < 20000
+      text = File.read(filespec)
+      if %r{<Error>}.match(text) && %r{</Error>}.match(text)
+        puts "\nDownload error, text was:\n#{text}\n\n\n"
+        raise "Download error"
+      end
+    end
+  end
+
+
   def download_file(link, data_dir)
     puts "Downloading #{link.filespec}..."
     tempfilespec = File.join(data_dir, 'tempfile')
     `curl -o #{tempfilespec} #{Shellwords.shellescape(link.url)}`
     if $?.exitstatus == 0
+      validate_downloaded_file(tempfilespec)
       FileUtils.mv(tempfilespec, link.filespec)
       puts "Finished downloading #{link.filename}\n\n"
     else
