@@ -1,4 +1,3 @@
-require 'mechanize'
 require 'nokogiri'
 
 require_relative 'download_link'
