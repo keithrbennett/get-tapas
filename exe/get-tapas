@@ -92,10 +92,10 @@ def get_html(options)
   input = options.input_spec
   if input == '-'
     STDIN.read
-  elsif File.file?(input)
+  elsif input.is_a?(String) && File.file?(input)
     File.read(input)
   else
-    raise "Invalid input source: #{input.inspect}"
+    raise "Invalid download list HTML input source: #{input.inspect}"
   end
 end
 
