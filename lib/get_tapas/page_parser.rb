@@ -16,11 +16,15 @@ module PageParser
     html_doc = Nokogiri::HTML(html_string)
     html_links = html_doc.xpath("//*[contains(@class, 'video-download-link')]")
 
-    html_links.map do |link|
-      url         = link.children.first.attributes['href'].value
-      description = link.children.first.text.strip
-      filename    = fn_url_to_filename.(url)
-      DownloadLink.new(url, filename, description)
+    if html_links.empty?
+      raise "No screencast links found. Are you sure about the input HTML source?"
+    else
+      html_links.map do |link|
+        url         = link.children.first.attributes['href'].value
+        description = link.children.first.text.strip
+        filename    = fn_url_to_filename.(url)
+        DownloadLink.new(url, filename, description)
+      end
     end
   end
 end
