@@ -1,3 +1,5 @@
+require 'shellwords'
+
 class Downloader
 
   attr_accessor :html, :options
@@ -6,6 +8,7 @@ class Downloader
     @html = html
     @options = options
   end
+
 
   def episode_num_ok(episode_num)
     min = options.min_episode_num

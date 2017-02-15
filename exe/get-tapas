@@ -16,8 +16,6 @@ Usage: get-tapas [options]
 require 'awesome_print'
 require 'fileutils'
 require 'optparse'
-require 'ostruct'
-require 'shellwords'
 require_relative '../lib/get_tapas/downloader'
 require_relative '../lib/get_tapas/options'
 require_relative '../lib/get_tapas/page_parser'

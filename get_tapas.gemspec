@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email         = ['keithrbennett@gmail.com']
 
   spec.summary       = %q{Downloads Ruby Tapas screencasts.}
-  spec.description   = %q{Downloads Ruby Tapas screencasts en masse for paid subscribers.}
+  spec.description   = %q{Downloads Ruby Tapas screencasts en masse for paid Ravenous and Legacy subscribers.}
   spec.homepage      = 'https://github.com/keithrbennett/get-tapas'
   spec.license       = 'MIT'
 

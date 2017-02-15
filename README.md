@@ -1,6 +1,6 @@
 # get-tapas #
 
-Downloads Ruby Tapas screencast videos for paid subscribers.
+Downloads Ruby Tapas screencast videos for paid "Ravenous" and "Legacy" subscribers.
 
 Prerequisites:
 
