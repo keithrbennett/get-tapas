@@ -59,7 +59,8 @@ class Downloader
   def get_link_info(html, dir)
     links = PageParser.parse(html)
     links.each do |link|
-      link.filespec = File.join(dir, link.filename)
+      basename = link.url.split('/').last
+      link.filespec = File.join(dir, basename + '.mp4')
       link.episode_num = link.filename.split('-').first.to_i
     end
   end
@@ -79,7 +80,9 @@ class Downloader
   def download_file(link, data_dir)
     puts "Downloading #{link.filespec}..."
     tempfilespec = File.join(data_dir, 'tempfile')
-    `curl -o #{tempfilespec} #{Shellwords.shellescape(link.url)}`
+    command = "curl -o #{tempfilespec} #{Shellwords.shellescape(link.url)}"
+    puts command
+    `#{command}`
     if $?.exitstatus == 0
       validate_downloaded_file(tempfilespec)
       FileUtils.mv(tempfilespec, link.filespec)
